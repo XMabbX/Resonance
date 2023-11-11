@@ -10,12 +10,12 @@ class TestCombinator(unittest.TestCase):
 
     def test_generate_coordinates(self):
         box = Box("TestBox", (2, 2))
-        assert list(Combinator.generate_coordinate(box))
+        self.assertTrue(list(Combinator.generate_coordinate(box)))
         expected_coordinates = [np.array((0, 0)), np.array((0, 1)), np.array((1, 0)), np.array((1, 1))]
         generated_coordinates = list(Combinator.generate_coordinate(box))
-        assert len(expected_coordinates) == len(generated_coordinates)
+        self.assertEqual(len(expected_coordinates), len(generated_coordinates))
         for exp_coord, gen_coord in zip(expected_coordinates, generated_coordinates):
-            assert np.all(exp_coord == gen_coord)
+            self.assertTrue(np.all(exp_coord == gen_coord))
 
     def test_generate_valid_positions_1x1(self):
         box = Box("TestBox", (2, 2))
