@@ -82,7 +82,11 @@ class BasicBlockTypes:
                 Orientation.up: Tilling(Orientation.up, np.array(((1,),))),
             }
         }),
-        "+": Block("+", (1, 1), 1, 2),
+        "+": Block("+", (1, 1), 1, 2, tiling={
+            Flip.horizontal: {
+                Orientation.up: Tilling(Orientation.up, np.array(((1,),))),
+            }
+        }),
         "D": Block("D", (1, 2), 2, 1, tiling={
             Flip.horizontal: {
                 Orientation.up: Tilling(Orientation.up, np.array(((1, 1),))),

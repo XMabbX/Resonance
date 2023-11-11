@@ -3,6 +3,7 @@ from unittest import TestCase
 import numpy as np
 
 from algorithmX import AlgorithmX
+from blocks import BasicBlockTypes, Box
 
 
 class TestAlgorithm(TestCase):
@@ -81,7 +82,7 @@ class TestAlgorithm(TestCase):
         self.assertEqual(len(selected_cover), 4)
         unpacked_solutions = AlgorithmX.unpack_solutions(selected_cover)
         print(unpacked_solutions)
-        self.assertTrue(unpacked_solutions == [(0, 6), (1, 7), (2, 5), (3, 4)])
+        self.assertTrue(unpacked_solutions == [[0, 6], [1, 7], [2, 5], [3, 4]])
 
     def test_cover_matrix2(self):
         selected_cover = AlgorithmX.get_cover(self.matrix2)
@@ -89,4 +90,29 @@ class TestAlgorithm(TestCase):
         unpacked_solutions = AlgorithmX.unpack_solutions(selected_cover)
         print(unpacked_solutions)
         self.assertEqual(len(unpacked_solutions), 1)
-        self.assertTrue(unpacked_solutions == [(1, 3, 5)])
+        self.assertTrue(unpacked_solutions == [[1, 3, 5]])
+
+    def test_create_table(self):
+        box = Box("TestBox", (2, 2))
+        blocks = [BasicBlockTypes.blocks["-"], BasicBlockTypes.blocks["C"]]
+        table = AlgorithmX.generate_table(box, blocks)
+        self.assertTrue(np.all(table == self.matrix))
+
+    def test_complete(self):
+        box = Box("TestBox", (2, 2))
+        blocks = [BasicBlockTypes.blocks["-"], BasicBlockTypes.blocks["C"]]
+        table = AlgorithmX.generate_table(box, blocks)
+        selected_cover = AlgorithmX.get_cover(table)
+        self.assertEqual(len(selected_cover), 4)
+        unpacked_solutions = AlgorithmX.unpack_solutions(selected_cover)
+        self.assertTrue(unpacked_solutions == [[0, 6], [1, 7], [2, 5], [3, 4]])
+
+    def test_unpack(self):
+        box = Box("TestBox", (2, 2))
+        blocks = [BasicBlockTypes.blocks["-"], BasicBlockTypes.blocks["+"], BasicBlockTypes.blocks["D"]]
+        table = AlgorithmX.generate_table(box, blocks)
+        selected_cover = AlgorithmX.get_cover(table)
+        unpacked_solutions = AlgorithmX.unpack_solutions(selected_cover)
+        expected_result = [[0, 9, 5], [0, 11, 6], [1, 9, 4], [1, 10, 7], [2, 8, 7], [2, 11, 4], [3, 8, 6], [3, 10, 5]]
+        print(unpacked_solutions)
+        self.assertTrue(unpacked_solutions == expected_result)
