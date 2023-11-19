@@ -80,39 +80,65 @@ class TestAlgorithm(TestCase):
     def test_cover_matrix(self):
         selected_cover = AlgorithmX.get_cover(self.matrix)
         self.assertEqual(len(selected_cover), 4)
-        unpacked_solutions = AlgorithmX.unpack_solutions(selected_cover)
-        print(unpacked_solutions)
-        self.assertTrue(unpacked_solutions == [[0, 6], [1, 7], [2, 5], [3, 4]])
+        # unpacked_solutions = AlgorithmX.unpack_solutions(selected_cover)
+        print(selected_cover)
+        self.assertTrue(selected_cover == [[0, 6], [1, 7], [2, 5], [3, 4]])
 
     def test_cover_matrix2(self):
         selected_cover = AlgorithmX.get_cover(self.matrix2)
-        self.assertEqual(len(selected_cover), 2)
-        unpacked_solutions = AlgorithmX.unpack_solutions(selected_cover)
-        print(unpacked_solutions)
-        self.assertEqual(len(unpacked_solutions), 1)
-        self.assertTrue(unpacked_solutions == [[1, 3, 5]])
+        self.assertEqual(len(selected_cover), 1)
+        print(selected_cover)
+        self.assertEqual(len(selected_cover), 1)
+        self.assertTrue(selected_cover == [[1, 3, 5]])
 
     def test_create_table(self):
         box = Box("TestBox", (2, 2))
         blocks = [BasicBlockTypes.blocks["-"], BasicBlockTypes.blocks["C"]]
-        table = AlgorithmX.generate_table(box, blocks)
+        position_table, table = AlgorithmX.generate_table(box, blocks)
         self.assertTrue(np.all(table == self.matrix))
 
     def test_complete(self):
         box = Box("TestBox", (2, 2))
         blocks = [BasicBlockTypes.blocks["-"], BasicBlockTypes.blocks["C"]]
-        table = AlgorithmX.generate_table(box, blocks)
+        position_table, table = AlgorithmX.generate_table(box, blocks)
         selected_cover = AlgorithmX.get_cover(table)
         self.assertEqual(len(selected_cover), 4)
-        unpacked_solutions = AlgorithmX.unpack_solutions(selected_cover)
-        self.assertTrue(unpacked_solutions == [[0, 6], [1, 7], [2, 5], [3, 4]])
+        self.assertTrue(selected_cover == [[0, 6], [1, 7], [2, 5], [3, 4]])
 
     def test_unpack(self):
         box = Box("TestBox", (2, 2))
         blocks = [BasicBlockTypes.blocks["-"], BasicBlockTypes.blocks["+"], BasicBlockTypes.blocks["D"]]
-        table = AlgorithmX.generate_table(box, blocks)
+        position_table, table = AlgorithmX.generate_table(box, blocks)
         selected_cover = AlgorithmX.get_cover(table)
-        unpacked_solutions = AlgorithmX.unpack_solutions(selected_cover)
         expected_result = [[0, 9, 5], [0, 11, 6], [1, 9, 4], [1, 10, 7], [2, 8, 7], [2, 11, 4], [3, 8, 6], [3, 10, 5]]
-        print(unpacked_solutions)
-        self.assertTrue(unpacked_solutions == expected_result)
+        print(selected_cover)
+        self.assertTrue(selected_cover == expected_result)
+
+    def test_no_cover(self):
+        blocks = [BasicBlockTypes.blocks["C"], BasicBlockTypes.blocks["C"]]
+        box = Box("Test", (2, 2))
+
+        position_table, table = AlgorithmX.generate_table(box, blocks)
+        selected_cover = AlgorithmX.get_cover(table)
+        print(selected_cover)
+        self.assertEqual(len(selected_cover),8)
+
+    def test_no_cover2(self):
+        blocks = [BasicBlockTypes.blocks["+"]]
+        box = Box("Test", (2, 2))
+
+        position_table, table = AlgorithmX.generate_table(box, blocks)
+        selected_cover = AlgorithmX.get_cover(table)
+        print(selected_cover)
+        self.assertEqual(len(selected_cover), 4)
+        expected_result = [[0], [1], [2], [3]]
+        self.assertTrue(selected_cover == expected_result)
+
+    def test_duplicated(self):
+        blocks = [BasicBlockTypes.blocks["C"], BasicBlockTypes.blocks["-"], BasicBlockTypes.blocks["+"]]
+        box = Box("Test", (2, 2))
+
+        position_table, table = AlgorithmX.generate_table(box, blocks)
+        selected_cover = AlgorithmX.get_cover(table)
+        print(selected_cover)
+        self.assertEqual(len(selected_cover), 8)

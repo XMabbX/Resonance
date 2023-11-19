@@ -10,11 +10,15 @@ class Combinator:
 
     @classmethod
     def generate_all_matrix(cls, block: Block, box: Box) -> Iterator[NDArray]:
-        for coordinate in cls.generate_valid_positions(block, box):
+        pos_count = 0
+        for position in cls.generate_valid_positions(block, box):
+            position_info = [pos_count, position.coordinate[0], position.coordinate[1], position.flip,
+                             position.orientation]
             matrix = np.zeros(box.size, dtype=int)
-            yield cls.generate_matrix(matrix,
-                                      block.tiling[coordinate.flip][coordinate.orientation].space,
-                                      coordinate.coordinate)
+            yield position_info, cls.generate_matrix(matrix,
+                                                     block.tiling[position.flip][position.orientation].space,
+                                                     position.coordinate)
+            pos_count += 1
 
     @classmethod
     def generate_matrix(cls, matrix: NDArray, patch: NDArray, coordinate: tCoordinate) -> NDArray:

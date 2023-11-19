@@ -74,13 +74,15 @@ class TestCombinator(unittest.TestCase):
     def test_generate_all_matrix_1x1(self):
         block = BasicBlockTypes.blocks["-"]
         box = Box("Test", (2, 2))
-        generate_matrices = list(Combinator.generate_all_matrix(block, box))
-        expected_matrices = [np.array(((1, 0), (0, 0))), np.array(((0, 1), (0, 0))), np.array(((0, 0), (0, 1))),
-                             np.array(((0, 0), (1, 0)))]
+        expected_positions = [[0, 0, 0, 0, 0], [1, 0, 1, 0, 0], [2, 1, 0, 0, 0], [3, 1, 1, 0, 0]]
+        expected_matrices = [np.array(((1, 0), (0, 0))), np.array(((0, 1), (0, 0))), np.array(((0, 0), (1, 0))),
+                             np.array(((0, 0), (0, 1)))]
+        idx = 0
+        for idx, (position, gen_matrix) in enumerate(Combinator.generate_all_matrix(block, box)):
+            self.assertTrue(np.all(gen_matrix == expected_matrices[idx]))
+            self.assertTrue(np.all(position == expected_positions[idx]))
 
-        assert len(generate_matrices) == len(expected_matrices)
-        for gen_matrix, exp_matrix in zip(generate_matrices, expected_matrices):
-            np.all(gen_matrix == exp_matrix)
+        self.assertEqual(idx + 1, len(expected_matrices))
 
     def test_generate_matrix_1x2(self):
         block = BasicBlockTypes.blocks["D"]
@@ -108,13 +110,15 @@ class TestCombinator(unittest.TestCase):
     def test_generate_all_matrix_1x2(self):
         block = BasicBlockTypes.blocks["D"]
         box = Box("Test", (2, 2))
-        generate_matrices = list(Combinator.generate_all_matrix(block, box))
+        expected_positions = [[0, 0, 0, 0, 0], [1, 1, 0, 0, 0], [2, 0, 0, 1, 1], [3, 0, 1, 1, 1]]
         expected_matrices = [np.array(((1, 1), (0, 0))), np.array(((0, 0), (1, 1))), np.array(((1, 0), (1, 0))),
                              np.array(((0, 1), (0, 1)))]
+        idx = 0
+        for idx, (position, gen_matrix) in enumerate(Combinator.generate_all_matrix(block, box)):
+            print(f"Gen position: {position}, expected position: {expected_positions[idx]}")
+            self.assertTrue(np.all(gen_matrix == expected_matrices[idx]))
 
-        assert len(generate_matrices) == len(expected_matrices)
-        for gen_matrix, exp_matrix in zip(generate_matrices, expected_matrices):
-            np.all(gen_matrix == exp_matrix)
+        self.assertEqual(idx + 1, len(expected_matrices))
 
     def test_generate_valid_positions_C(self):
         box = Box("TestBox", (2, 2))
@@ -137,10 +141,10 @@ class TestCombinator(unittest.TestCase):
     def test_generate_all_matrix_C(self):
         block = BasicBlockTypes.blocks["C"]
         box = Box("Test", (2, 2))
-        generate_matrices = list(Combinator.generate_all_matrix(block, box))
         expected_matrices = [np.array(((1, 1), (1, 0))), np.array(((1, 1), (0, 1))), np.array(((0, 1), (1, 1))),
                              np.array(((1, 0), (1, 1)))]
+        idx = 0
+        for idx, (position, gen_matrix) in enumerate(Combinator.generate_all_matrix(block, box)):
+            self.assertTrue(np.all(gen_matrix == expected_matrices[idx]))
 
-        assert len(generate_matrices) == len(expected_matrices)
-        for gen_matrix, exp_matrix in zip(generate_matrices, expected_matrices):
-            np.all(gen_matrix == exp_matrix)
+        self.assertEqual(idx + 1, len(expected_matrices))
