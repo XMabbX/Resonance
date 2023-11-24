@@ -31,11 +31,11 @@ class TestAlgorithm(TestCase):
         self.assertEqual(AlgorithmX.get_column_index_lowest_ones(self.matrix2), (0, 2))
 
     def test_find_rows_with_one_in_index(self):
-        selected = AlgorithmX.get_all_columns_index_with_one_in_index(self.matrix, 0)
+        selected = AlgorithmX.get_all_rows_index_with_one_in_index(self.matrix, 0)
         self.assertEqual(len(selected), 4)
         self.assertTrue(np.all(selected == (0, 1, 2, 3)))
 
-        selected = AlgorithmX.get_all_columns_index_with_one_in_index(self.matrix2, 0)
+        selected = AlgorithmX.get_all_rows_index_with_one_in_index(self.matrix2, 0)
         self.assertEqual(len(selected), 2)
         self.assertTrue(np.all(selected == (0, 1)))
 
@@ -112,6 +112,7 @@ class TestAlgorithm(TestCase):
         selected_cover = AlgorithmX.get_cover(table)
         expected_result = [[0, 9, 5], [0, 11, 6], [1, 9, 4], [1, 10, 7], [2, 8, 7], [2, 11, 4], [3, 8, 6], [3, 10, 5]]
         print(selected_cover)
+        self.assertEqual(len(selected_cover), 8)
         self.assertTrue(selected_cover == expected_result)
 
     def test_no_cover(self):
@@ -121,7 +122,7 @@ class TestAlgorithm(TestCase):
         position_table, table = AlgorithmX.generate_table(box, blocks)
         selected_cover = AlgorithmX.get_cover(table)
         print(selected_cover)
-        self.assertEqual(len(selected_cover),8)
+        self.assertEqual(4, len(selected_cover))
 
     def test_no_cover2(self):
         blocks = [BasicBlockTypes.blocks["+"]]
@@ -130,15 +131,50 @@ class TestAlgorithm(TestCase):
         position_table, table = AlgorithmX.generate_table(box, blocks)
         selected_cover = AlgorithmX.get_cover(table)
         print(selected_cover)
-        self.assertEqual(len(selected_cover), 4)
-        expected_result = [[0], [1], [2], [3]]
+        self.assertEqual(1, len(selected_cover))
+        expected_result = [[0]]
         self.assertTrue(selected_cover == expected_result)
 
     def test_duplicated(self):
-        blocks = [BasicBlockTypes.blocks["C"], BasicBlockTypes.blocks["-"], BasicBlockTypes.blocks["+"]]
+        blocks = [BasicBlockTypes.blocks["+"], BasicBlockTypes.blocks["-"], BasicBlockTypes.blocks["C"]]
         box = Box("Test", (2, 2))
 
         position_table, table = AlgorithmX.generate_table(box, blocks)
         selected_cover = AlgorithmX.get_cover(table)
         print(selected_cover)
-        self.assertEqual(len(selected_cover), 8)
+        self.assertEqual(len(selected_cover), 4)
+        self.assertTrue(selected_cover == [[0, 10], [1, 11], [2, 9], [3, 8]])
+
+    def test_cover_duplicated(self):
+        blocks = [BasicBlockTypes.blocks["+"], BasicBlockTypes.blocks["-"], BasicBlockTypes.blocks["D"]]
+        box = Box("Test", (2, 2))
+
+        position_table, table = AlgorithmX.generate_table(box, blocks)
+        selected_cover = AlgorithmX.get_cover(table)
+        print(selected_cover)
+        self.assertEqual(8, len(selected_cover))
+        self.assertTrue(
+            selected_cover == [[0, 9, 5], [0, 11, 6], [1, 9, 4], [1, 10, 7], [2, 8, 7], [2, 11, 4], [3, 8, 6],
+                               [3, 10, 5]])
+
+        blocks = [BasicBlockTypes.blocks["D"], BasicBlockTypes.blocks["+"], BasicBlockTypes.blocks["-"]]
+        box = Box("Test", (2, 2))
+
+        position_table, table = AlgorithmX.generate_table(box, blocks)
+        selected_cover = AlgorithmX.get_cover(table)
+        print(selected_cover)
+        self.assertEqual(8, len(selected_cover))
+        self.assertTrue(
+            selected_cover == [[0, 6, 11], [0, 7, 10], [1, 4, 9], [1, 5, 8], [2, 5, 11], [2, 7, 9], [3, 4, 10],
+                               [3, 6, 8]])
+
+    def test_long_duplicated(self):
+        blocks = [BasicBlockTypes.blocks["C"], BasicBlockTypes.blocks["C"], BasicBlockTypes.blocks["D"],
+                  BasicBlockTypes.blocks["+"]]
+
+        box = Box("Test", (2, 3))
+
+        position_table, table = AlgorithmX.generate_table(box, blocks)
+        selected_cover = AlgorithmX.get_cover(table)
+        print(selected_cover)
+        self.assertEqual(10, len(selected_cover))

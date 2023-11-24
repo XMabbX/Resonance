@@ -51,7 +51,7 @@ class AlgorithmX:
 
         found_solutions = []
         # Find rows with ones in the lowest sum column
-        for i in cls.get_all_columns_index_with_one_in_index(matrix, min_index):
+        for i in cls.get_all_rows_index_with_one_in_index(matrix, min_index):
             current_index = [int(current_indexes[i])]
             print("\t" * level + f"Exploring branch: {current_index[0]}")
             selected_rows = cls.get_all_rows_with_zeros_after_and(matrix, matrix[i])
@@ -80,7 +80,7 @@ class AlgorithmX:
         return min_index, sum_values[min_index]
 
     @classmethod
-    def get_all_columns_index_with_one_in_index(cls, matrix: NDArray, index: int):
+    def get_all_rows_index_with_one_in_index(cls, matrix: NDArray, index: int):
         return np.where(matrix[:, index] == 1)[0]
 
     @classmethod
@@ -90,7 +90,7 @@ class AlgorithmX:
     @classmethod
     def get_rows_index_with_lowest_sum_colum_test(cls, matrix: NDArray):
         min_index, _ = cls.get_column_index_lowest_ones(matrix)
-        return cls.get_all_columns_index_with_one_in_index(matrix, min_index)
+        return cls.get_all_rows_index_with_one_in_index(matrix, min_index)
 
     @classmethod
     def get_all_row_with_zeros_after_and_using_index_test(cls, matrix: NDArray, index: int):
