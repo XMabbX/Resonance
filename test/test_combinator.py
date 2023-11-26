@@ -52,22 +52,22 @@ class TestCombinator(unittest.TestCase):
         block = BasicBlockTypes.blocks["-"]
 
         matrix = np.zeros((2, 2))
-        Combinator.generate_matrix(matrix, block.tiling[0][0].space, np.array((0, 0)))
+        Combinator.patch_matrix(matrix, block.tiling[0][0].space, np.array((0, 0)))
         expected_matrix = np.array(((1, 0), (0, 0)))
         assert np.all(expected_matrix == matrix)
 
         matrix = np.zeros((2, 2))
-        Combinator.generate_matrix(matrix, block.tiling[0][0].space, np.array((0, 1)))
+        Combinator.patch_matrix(matrix, block.tiling[0][0].space, np.array((0, 1)))
         expected_matrix = np.array(((0, 1), (0, 0)))
         assert np.all(expected_matrix == matrix)
 
         matrix = np.zeros((2, 2))
-        Combinator.generate_matrix(matrix, block.tiling[0][0].space, np.array((1, 1)))
+        Combinator.patch_matrix(matrix, block.tiling[0][0].space, np.array((1, 1)))
         expected_matrix = np.array(((0, 0), (0, 1)))
         assert np.all(expected_matrix == matrix)
 
         matrix = np.zeros((2, 2))
-        Combinator.generate_matrix(matrix, block.tiling[0][0].space, np.array((1, 0)))
+        Combinator.patch_matrix(matrix, block.tiling[0][0].space, np.array((1, 0)))
         expected_matrix = np.array(((0, 0), (1, 0)))
         assert np.all(expected_matrix == matrix)
 
@@ -88,22 +88,22 @@ class TestCombinator(unittest.TestCase):
         block = BasicBlockTypes.blocks["D"]
 
         matrix = np.zeros((2, 2))
-        Combinator.generate_matrix(matrix, block.tiling[0][0].space, np.array((0, 0)))
+        Combinator.patch_matrix(matrix, block.tiling[0][0].space, np.array((0, 0)))
         expected_matrix = np.array(((1, 1), (0, 0)))
         assert np.all(expected_matrix == matrix)
 
         matrix = np.zeros((2, 2))
-        Combinator.generate_matrix(matrix, block.tiling[0][0].space, np.array((1, 0)))
+        Combinator.patch_matrix(matrix, block.tiling[0][0].space, np.array((1, 0)))
         expected_matrix = np.array(((0, 0), (1, 1)))
         assert np.all(expected_matrix == matrix)
 
         matrix = np.zeros((2, 2))
-        Combinator.generate_matrix(matrix, block.tiling[1][1].space, np.array((0, 0)))
+        Combinator.patch_matrix(matrix, block.tiling[1][1].space, np.array((0, 0)))
         expected_matrix = np.array(((1, 0), (1, 0)))
         assert np.all(expected_matrix == matrix)
 
         matrix = np.zeros((2, 2))
-        Combinator.generate_matrix(matrix, block.tiling[1][1].space, np.array((0, 1)))
+        Combinator.patch_matrix(matrix, block.tiling[1][1].space, np.array((0, 1)))
         expected_matrix = np.array(((0, 1), (0, 1)))
         assert np.all(expected_matrix == matrix)
 

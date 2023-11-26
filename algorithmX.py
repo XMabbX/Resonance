@@ -26,13 +26,15 @@ class AlgorithmX:
         table_rows = deque()
         position_rows = deque()
         number_of_blocks = len(blocks)
+        index_count = 0
 
         for index, block in enumerate(blocks):
             block_identification_array = np.zeros(number_of_blocks, dtype=int)
             block_identification_array[index] = 1
             for position_info, matrix in Combinator.generate_all_matrix(block, box):
-                position_rows.append(position_info)
+                position_rows.append([index_count] + position_info)
                 table_rows.append(np.concatenate((block_identification_array.copy(), matrix.flatten())))
+                index_count += 1
         return position_rows, table_rows
 
     @classmethod

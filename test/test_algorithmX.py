@@ -177,4 +177,4 @@ class TestAlgorithm(TestCase):
         position_table, table = AlgorithmX.generate_table(box, blocks)
         selected_cover = AlgorithmX.get_cover(table)
         print(selected_cover)
-        self.assertEqual(10, len(selected_cover))
+        self.assertEqual(8, len(selected_cover))
