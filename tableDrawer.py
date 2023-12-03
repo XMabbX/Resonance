@@ -12,12 +12,25 @@ from combinator import Combinator
 class TableDrawer:
 
     @classmethod
-    def draw_all_results(cls, results: List[List[int]], position_table: NDArray, box: Box):
+    def draw_all_results(cls, results: List[List[int]], position_table: NDArray, box: Box, validate=False):
         for result in results:
             matrix = np.zeros(box.size, dtype=np.int32)
             print(f"Printing result {result}")
             cls.fill_matrix(result, position_table, matrix, box)
+            if validate:
+                assert cls.validate_solution(result, position_table, matrix, box)
             cls.draw_grid(matrix)
+
+    @classmethod
+    def validate_solution(cls, result: List[int], position_table: NDArray, matrix: NDArray, box: Box):
+        temp_matrix = np.zeros(box.size, dtype=np.int32)
+        for index in result:
+            block_info = position_table[index]
+            sum(np.logical_and(matrix, temp_matrix))
+            cls.patch_matrix(temp_matrix, cls.get_block_patch(block_info), block_info[2:4])
+            matrix += temp_matrix
+            temp_matrix.fill(0)
+        return True
 
     @classmethod
     def fill_matrix(cls, result: List[int], position_table: NDArray, matrix: NDArray, box: Box):
@@ -72,4 +85,3 @@ class TableDrawer:
         box = Box("Test", box_size)
         for matrix in Combinator.generate_all_matrix(block, box):
             print(cls.draw_grid(matrix))
-

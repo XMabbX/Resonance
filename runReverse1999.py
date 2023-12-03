@@ -47,12 +47,14 @@ Leilani = Character("Leilani", {
 
 if __name__ == "__main__":
     # position_table, table = AlgorithmX.generate_table(APPLe.resonance[1].box, APPLe.resonance[1].blocks)
-    # selected_cover = AlgorithmX.get_cover(table)
+    # selected_cover = AlgorithmX.get_cover(table, len(APPLe.resonance[1].blocks))
+    # print(selected_cover)
+    # print(len(selected_cover))
     # TableDrawer.draw_all_results(selected_cover, position_table, APPLe.resonance[1].box)
     position_table, table = AlgorithmX.generate_table(Leilani.resonance[2].box, Leilani.resonance[2].blocks)
-    selected_cover = AlgorithmX.get_cover(table)
+    selected_cover = AlgorithmX.get_cover(table, len(Leilani.resonance[2].blocks))
     TableDrawer.draw_all_results(selected_cover, position_table, Leilani.resonance[2].box)
-    # print(selected_cover)
+    print(selected_cover)
 
     # blocks = [BasicBlockTypes.blocks["C"], BasicBlockTypes.blocks["C"]]
     # box = Box("Test", (2,2))

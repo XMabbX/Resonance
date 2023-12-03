@@ -4,6 +4,7 @@ import numpy as np
 
 from algorithmX import AlgorithmX
 from blocks import BasicBlockTypes, Box
+from tableDrawer import TableDrawer
 
 
 class TestAlgorithm(TestCase):
@@ -78,18 +79,11 @@ class TestAlgorithm(TestCase):
                                ))
 
     def test_cover_matrix(self):
-        selected_cover = AlgorithmX.get_cover(self.matrix)
+        selected_cover = AlgorithmX.get_cover(self.matrix, 2)
         self.assertEqual(len(selected_cover), 4)
         # unpacked_solutions = AlgorithmX.unpack_solutions(selected_cover)
         print(selected_cover)
         self.assertTrue(selected_cover == [[0, 6], [1, 7], [2, 5], [3, 4]])
-
-    def test_cover_matrix2(self):
-        selected_cover = AlgorithmX.get_cover(self.matrix2)
-        self.assertEqual(len(selected_cover), 1)
-        print(selected_cover)
-        self.assertEqual(len(selected_cover), 1)
-        self.assertTrue(selected_cover == [[1, 3, 5]])
 
     def test_create_table(self):
         box = Box("TestBox", (2, 2))
@@ -101,7 +95,7 @@ class TestAlgorithm(TestCase):
         box = Box("TestBox", (2, 2))
         blocks = [BasicBlockTypes.blocks["-"], BasicBlockTypes.blocks["C"]]
         position_table, table = AlgorithmX.generate_table(box, blocks)
-        selected_cover = AlgorithmX.get_cover(table)
+        selected_cover = AlgorithmX.get_cover(table, 2)
         self.assertEqual(len(selected_cover), 4)
         self.assertTrue(selected_cover == [[0, 6], [1, 7], [2, 5], [3, 4]])
 
@@ -109,8 +103,8 @@ class TestAlgorithm(TestCase):
         box = Box("TestBox", (2, 2))
         blocks = [BasicBlockTypes.blocks["-"], BasicBlockTypes.blocks["+"], BasicBlockTypes.blocks["D"]]
         position_table, table = AlgorithmX.generate_table(box, blocks)
-        selected_cover = AlgorithmX.get_cover(table)
-        expected_result = [[0, 9, 5], [0, 11, 6], [1, 9, 4], [1, 10, 7], [2, 8, 7], [2, 11, 4], [3, 8, 6], [3, 10, 5]]
+        selected_cover = AlgorithmX.get_cover(table, 3)
+        expected_result = [[0, 5, 9], [0, 6, 11], [1, 4, 9], [1, 7, 10], [2, 4, 11], [2, 7, 8], [3, 5, 10], [3, 6, 8]]
         print(selected_cover)
         self.assertEqual(len(selected_cover), 8)
         self.assertTrue(selected_cover == expected_result)
@@ -120,48 +114,47 @@ class TestAlgorithm(TestCase):
         box = Box("Test", (2, 2))
 
         position_table, table = AlgorithmX.generate_table(box, blocks)
-        selected_cover = AlgorithmX.get_cover(table)
+        selected_cover = AlgorithmX.get_cover(table, 2)
         print(selected_cover)
-        self.assertEqual(4, len(selected_cover))
+        self.assertIsNone(selected_cover)
 
     def test_no_cover2(self):
         blocks = [BasicBlockTypes.blocks["+"]]
         box = Box("Test", (2, 2))
 
         position_table, table = AlgorithmX.generate_table(box, blocks)
-        selected_cover = AlgorithmX.get_cover(table)
-        print(selected_cover)
-        self.assertEqual(1, len(selected_cover))
-        expected_result = [[0]]
-        self.assertTrue(selected_cover == expected_result)
+        selected_cover = AlgorithmX.get_cover(table, 1)
+        self.assertIsNone(selected_cover)
 
     def test_duplicated(self):
         blocks = [BasicBlockTypes.blocks["+"], BasicBlockTypes.blocks["-"], BasicBlockTypes.blocks["C"]]
         box = Box("Test", (2, 2))
 
         position_table, table = AlgorithmX.generate_table(box, blocks)
-        selected_cover = AlgorithmX.get_cover(table)
+        selected_cover = AlgorithmX.get_cover(table, 3)
         print(selected_cover)
-        self.assertEqual(len(selected_cover), 4)
-        self.assertTrue(selected_cover == [[0, 10], [1, 11], [2, 9], [3, 8]])
+        self.assertEqual(8, len(selected_cover))
+        self.assertTrue(
+            selected_cover == [[0, 10], [1, 11], [2, 9], [3, 8], [4, 10], [5, 11], [6, 9], [7, 8]])
 
     def test_cover_duplicated(self):
         blocks = [BasicBlockTypes.blocks["+"], BasicBlockTypes.blocks["-"], BasicBlockTypes.blocks["D"]]
         box = Box("Test", (2, 2))
 
         position_table, table = AlgorithmX.generate_table(box, blocks)
-        selected_cover = AlgorithmX.get_cover(table)
+        selected_cover = AlgorithmX.get_cover(table, 3)
         print(selected_cover)
         self.assertEqual(8, len(selected_cover))
         self.assertTrue(
-            selected_cover == [[0, 9, 5], [0, 11, 6], [1, 9, 4], [1, 10, 7], [2, 8, 7], [2, 11, 4], [3, 8, 6],
-                               [3, 10, 5]])
+            selected_cover == [[0, 5, 9], [0, 6, 11], [1, 4, 9], [1, 7, 10], [2, 4, 11], [2, 7, 8], [3, 5, 10],
+                               [3, 6, 8]])
 
+    def test_cover_duplicated_2(self):
         blocks = [BasicBlockTypes.blocks["D"], BasicBlockTypes.blocks["+"], BasicBlockTypes.blocks["-"]]
         box = Box("Test", (2, 2))
 
         position_table, table = AlgorithmX.generate_table(box, blocks)
-        selected_cover = AlgorithmX.get_cover(table)
+        selected_cover = AlgorithmX.get_cover(table, 3)
         print(selected_cover)
         self.assertEqual(8, len(selected_cover))
         self.assertTrue(
@@ -175,6 +168,7 @@ class TestAlgorithm(TestCase):
         box = Box("Test", (2, 3))
 
         position_table, table = AlgorithmX.generate_table(box, blocks)
-        selected_cover = AlgorithmX.get_cover(table)
+        selected_cover = AlgorithmX.get_cover(table, 4)
         print(selected_cover)
-        self.assertEqual(8, len(selected_cover))
+        TableDrawer.draw_all_results(selected_cover, position_table, box, True)
+        self.assertEqual(24, len(selected_cover))
