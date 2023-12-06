@@ -1,3 +1,4 @@
+import time
 import dataclasses
 
 from algorithmX import AlgorithmX
@@ -47,43 +48,13 @@ Leilani = Character("Leilani", {
 
 if __name__ == "__main__":
     # position_table, table = AlgorithmX.generate_table(APPLe.resonance[1].box, APPLe.resonance[1].blocks)
-    # selected_cover = AlgorithmX.get_cover(table, len(APPLe.resonance[1].blocks))
+    # selected_cover = AlgorithmX.get_cover_debug(table, len(APPLe.resonance[1].blocks))
     # print(selected_cover)
     # print(len(selected_cover))
     # TableDrawer.draw_all_results(selected_cover, position_table, APPLe.resonance[1].box)
+    start_time = time.time()
     position_table, table = AlgorithmX.generate_table(Leilani.resonance[2].box, Leilani.resonance[2].blocks)
     selected_cover = AlgorithmX.get_cover(table, len(Leilani.resonance[2].blocks))
-    TableDrawer.draw_all_results(selected_cover, position_table, Leilani.resonance[2].box)
-    print(selected_cover)
-
-    # blocks = [BasicBlockTypes.blocks["C"], BasicBlockTypes.blocks["C"]]
-    # box = Box("Test", (2,2))
-    #
-    # position_table, table = AlgorithmX.generate_table(box, blocks)
-    # selected_cover = AlgorithmX.get_cover(table)
+    # TableDrawer.draw_all_results(selected_cover, position_table, Leilani.resonance[2].box)
+    print(f"Time to execute: {time.time() - start_time}")
     # print(selected_cover)
-
-    # blocks = [BasicBlockTypes.blocks["+"]]
-    # box = Box("Test", (2, 2))
-    #
-    # position_table, table = AlgorithmX.generate_table(box, blocks)
-    # selected_cover = AlgorithmX.get_cover(table)
-    # print(selected_cover)
-
-    # blocks = [BasicBlockTypes.blocks["C"], BasicBlockTypes.blocks["-"], BasicBlockTypes.blocks["+"]]
-    # box = Box("Test", (2, 2))
-    #
-    # position_table, table = AlgorithmX.generate_table(box, blocks)
-    # print(f"Table: {table}")
-    # selected_cover = AlgorithmX.get_cover(table)
-    # print("Solutions")
-    # print(selected_cover)
-    #
-    # blocks = [BasicBlockTypes.blocks["C"], BasicBlockTypes.blocks["C"], BasicBlockTypes.blocks["D"],
-    #           BasicBlockTypes.blocks["+"]]
-    #
-    # box = Box("Test", (2, 3))
-    #
-    # position_table, table = AlgorithmX.generate_table(box, blocks)
-    # selected_cover = AlgorithmX.get_cover(table)
-    # TableDrawer.draw_all_results(selected_cover, position_table, box)
