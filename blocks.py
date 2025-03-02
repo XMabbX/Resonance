@@ -1,11 +1,9 @@
-from typing import Any
-
 import numpy as np
 import dataclasses
 
-from nptyping import NDArray, Int32, Shape
+from numpy.typing import NDArray
 
-tCoordinate = NDArray[Shape['1, 2'], Int32]
+tCoordinate = NDArray
 
 
 class Orientation:
@@ -23,7 +21,7 @@ class Flip:
 @dataclasses.dataclass
 class Tilling:
     orientation: int
-    space: NDArray[Any, Int32]
+    space: NDArray
 
 
 @dataclasses.dataclass

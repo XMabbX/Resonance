@@ -1,7 +1,7 @@
 from typing import Iterator
 
 import numpy as np
-from nptyping import NDArray
+from numpy.typing import NDArray
 
 from blocks import Block, Box, Position, tCoordinate, Flip
 
